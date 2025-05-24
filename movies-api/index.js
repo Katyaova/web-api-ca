@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-
+import moviesRouter from './api/movies';  
 import usersRouter from './api/users/index.js';
 
 import './db';
@@ -30,7 +30,7 @@ const errHandler = (err, req, res, next) => {
 // Routers
 
 app.use('/api/users', usersRouter);
-
+app.use('/api/movies', moviesRouter); 
 // Start server
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
