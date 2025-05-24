@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import moviesRouter from './api/movies';  
+import moviesRouter from './api/movies/index.js';  
 import usersRouter from './api/users/index.js';
 
 import './db';

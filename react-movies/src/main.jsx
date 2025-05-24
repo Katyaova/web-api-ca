@@ -17,6 +17,10 @@ import PopularMoviesPage from "./pages/popularMoviesPage";
 import NowPlayingMoviesPage from "./pages/nowPlayingMoviesPage";
 import MovieRecommendationsPage from "./pages/movieRecommendationsPage";
 import MustWatchMoviesPage from "./pages/mustWatchMoviesPage";
+import StartPage from "./pages/startPage";
+import Login from "./pages/loginPage";
+import SignUpPage from "./pages/signupPage";
+
 
 
 const queryClient = new QueryClient({
@@ -36,6 +40,9 @@ const App = () => {
         <SiteHeader />
         <MoviesContextProvider>
           <Routes>
+            <Route path="/" element={<StartPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUpPage />} />
             <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
             <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
             <Route path="/movies/:id" element={<MoviePage />} />
@@ -48,6 +55,7 @@ const App = () => {
             <Route path="/movies/now" element={<NowPlayingMoviesPage />} />
             <Route path="/movie/:id/recommendations" element={<MovieRecommendationsPage />} />
             <Route path="/movies/mustwatch" element={<MustWatchMoviesPage />} />
+
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
