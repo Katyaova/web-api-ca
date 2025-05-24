@@ -1,0 +1,32 @@
+:root {
+  --primary: #355144;
+  --secondary: #5c7e60;
+  --accent: #7a73d1;
+  --background: #5b745f;
+  --text: #ffffff;
+  --text-dark: #1a1a1a;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-dark);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
