@@ -24,13 +24,14 @@ const errHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'production') {
     return res.status(500).send('Something went wrong!');
   }
-  res.status(500).send(`Hey!! You caught the error 👍👍. Here's the details: ${err.stack}`);
+  res.status(500).send(`Hey!! You caught the error. Here's the details: ${err.stack}`);
 };
 
 // Routers
 
 app.use('/api/users', usersRouter);
 app.use('/api/movies', moviesRouter); 
+
 // Start server
 app.listen(port, () => {
   console.info(`Server running at ${port}`);

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -7,19 +9,17 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { useNavigate } from "react-router";
 import { styled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = () => {
+  const { isAuthenticated, userName, signout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
   const navigate = useNavigate();
 
   const menuOptions = [
@@ -30,7 +30,6 @@ const SiteHeader = () => {
     { label: "Popular", path: "/movies/popular" },
     { label: "Now Playing", path: "/movies/now" },
     { label: "Must Watch Playlist", path: "/movies/mustwatch" },
-    
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -44,29 +43,12 @@ const SiteHeader = () => {
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        sx={{
-          background: "linear-gradient(90deg, #335b3e 0%, #78b388 100%)",
-          boxShadow: 3,
-        }}
-      >
+      <AppBar position="fixed" sx={{ background: "linear-gradient(90deg, #335b3e 0%, #78b388 100%)", boxShadow: 3 }}>
         <Toolbar>
-          <Typography
-            variant="h4"
-            sx={{ flexGrow: 1, fontWeight: 600, color: "#fff" }}
-          >
+          <Typography variant="h4" sx={{ flexGrow: 1, fontWeight: 600, color: "#fff" }}>
             TMDB Client
           </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              flexGrow: 2,
-              fontStyle: "italic",
-              color: "#dfffe0",
-              display: { xs: "none", sm: "block" },
-            }}
-          >
+          <Typography variant="h6" sx={{ flexGrow: 2, fontStyle: "italic", color: "#dfffe0", display: { xs: "none", sm: "block" } }}>
             Find your next favorite movie 🍿
           </Typography>
 
@@ -84,23 +66,14 @@ const SiteHeader = () => {
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={open}
                 onClose={() => setAnchorEl(null)}
               >
                 {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
+                  <MenuItem key={opt.label} onClick={() => handleMenuSelect(opt.path)}>
                     {opt.label}
                   </MenuItem>
                 ))}
@@ -124,6 +97,29 @@ const SiteHeader = () => {
                 </Button>
               ))}
             </>
+          )}
+
+          {isAuthenticated && (
+            <div style={{ marginLeft: "20px", display: "flex", alignItems: "center" }}>
+              <Typography variant="body1" sx={{ color: "#fff", marginRight: 1 }}>
+                Welcome, {userName}!
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={signout}
+                sx={{
+                  color: "#fff",
+                  borderColor: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#4f9c71",
+                    borderColor: "#dfffe0",
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            </div>
           )}
         </Toolbar>
       </AppBar>

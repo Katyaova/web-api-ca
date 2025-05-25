@@ -1,52 +1,41 @@
 import { useState, createContext } from "react";
+import { login, signup } from "../api/movies-api";
 
 export const AuthContext = createContext(null); //eslint-disable-line
 
 const AuthContextProvider = (props) => {
   const existingToken = localStorage.getItem("token");
-  const [isAuthenticated, setIsAuthenticated] = useState(!!existingToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authToken, setAuthToken] = useState(existingToken); //eslint-disable-line
   const [userName, setUserName] = useState("");
 
+  //Function to put JWT token in local storage.
   const setToken = (data) => {
     localStorage.setItem("token", data);
     setAuthToken(data);
-  };
+  }
 
-  const authenticate = async (username, password) => {
-    const res = await fetch("http://localhost:8080/api/users?action=authenticate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+const authenticate = async (username, password) => {
+  const result = await login(username, password);
+  if (result.token) {
+    setToken(result.token);
+    setIsAuthenticated(true);
+    setUserName(username);
+    return true; // ✅ success
+  } else {
+    return false; // ❌ failure
+  }
+};
 
-    const data = await res.json();
-
-    if (res.ok && data.token) {
-      setToken(data.token);
-      setIsAuthenticated(true);
-      setUserName(username);
-    } else {
-      alert(data.msg || "Login failed");
-    }
-  };
 
   const register = async (username, password) => {
-    const res = await fetch("http://localhost:8080/api/users?action=register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await res.json();
-    return data.success;
+    const result = await signup(username, password);
+    return result.success;
   };
 
   const signout = () => {
-    setIsAuthenticated(false);
-    setAuthToken(null);
-    localStorage.removeItem("token");
-  };
+    setTimeout(() => setIsAuthenticated(false), 100);
+  }
 
   return (
     <AuthContext.Provider
@@ -55,11 +44,10 @@ const AuthContextProvider = (props) => {
         authenticate,
         register,
         signout,
-        userName,
-        authToken,
+        userName
       }}
     >
-      {props.children}
+      {props.children} {/* eslint-disable-line */}
     </AuthContext.Provider>
   );
 };
