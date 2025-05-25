@@ -9,7 +9,7 @@ const AuthContextProvider = (props) => {
   const [authToken, setAuthToken] = useState(existingToken); //eslint-disable-line
   const [userName, setUserName] = useState("");
 
-  //Function to put JWT token in local storage.
+ 
   const setToken = (data) => {
     localStorage.setItem("token", data);
     setAuthToken(data);
@@ -18,12 +18,13 @@ const AuthContextProvider = (props) => {
 const authenticate = async (username, password) => {
   const result = await login(username, password);
   if (result.token) {
+    localStorage.setItem("token", result.token);
     setToken(result.token);
     setIsAuthenticated(true);
     setUserName(username);
-    return true; // ✅ success
+    return true; 
   } else {
-    return false; // ❌ failure
+    return false; 
   }
 };
 
